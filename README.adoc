@@ -1,4 +1,5 @@
 = My shell scripts
+:toc:
 
 These are the shell scripts I've written for a broad range of tasks.
 Move these into your $PATH to call them without needing to provide a full path to the script to run it.
@@ -10,6 +11,37 @@ battery-notify::
 This script monitors battery levels for 2 battery systems and sends notifications via `notify-send` when the battery gets too low.
 At 5% the script notifies the user that the computer will lock in 60 seconds if not plugged in.
 If the computer isn't plugged in within 60 seconds, the screen locks with the command defined in the `lock_command` variable on line 3.
+
+pdf2png::
+This script converts PDF pages to compressed PNG images.
+It is useful for sending to cell phones or other situations where a PDF might be cumbersome.
+The script also adds a 2 pixel, black border to the PNGs, which can be helpful for displaying them on white backgrounds.
+
+This script accepts up to 3 arguments:
+
+. The PDF to convert to PNG
+. The first page to convert
+. The last page to convert
+
+The full command can be
+
+`pdf2png example.pdf 1 5`
+
+If argument 3 is empty, the script only converts the page given in argument 2.
+
+`pdf2png example.pdf 1` 
+
+If only the pdf name is given, the script only creates a PNG of the first page.
+
+`pdf2png example.pdf`
+
+
+*Dependencies*
+
+* pdftoppm
+* imagemagick
+* optipng
+
 
 == Status bar scripts (sb-*)
 
