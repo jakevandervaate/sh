@@ -1,0 +1,36 @@
+#!/bin/sh
+
+lock_command="slock"
+
+while true; do
+
+bat_0="$(cat /sys/class/power_supply/BAT0/capacity)"
+bat_1="$(cat /sys/class/power_supply/BAT1/capacity)"
+bats_total=$((bat_0+bat_1))
+bats_average=$((bats_total/2))
+
+if [ "$bats_average" = "99" ]
+then 
+	:
+elif [ "$bats_average" = "25" ]
+then 
+	notify-send "Battery" "Battery charge is $bats_average\%"
+elif [ "$bats_average" = "15" ]
+then
+	notify-send -u critical "Battery-Notify" "Battery charge is $bats_average\%\nPlug in immediately"
+elif [ "$bats_average" = "5" ]
+then
+	notify-send "Battery-Notify" "Laptop will hibernate in 1 minute"
+	sleep 60
+	if [ "$(cat /sys/class/power_supply/BAT0/status)" = "Not charging" ]
+	then
+		"$lock_command"
+	else
+		:
+	fi
+else
+	:
+fi
+
+sleep 180 
+done

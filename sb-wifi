@@ -1,0 +1,15 @@
+#!/bin/sh
+
+wifi_interface="wlp4s0"
+
+wifi_status="$(nmcli | grep "^$wifi_interface" | awk '(NR==1){print $2}')"
+
+if [ "$wifi_status" = "connected" ]
+then
+	echo ""
+elif [ "$wifi_status" = "unavailable" ]
+then
+	echo ""
+else
+	echo ""
+fi

@@ -1,0 +1,26 @@
+#!/bin/sh
+#DWM Status Bar
+
+bat_0=$(cat /sys/class/power_supply/BAT0/capacity)
+bat_1=$(cat /sys/class/power_supply/BAT1/capacity)
+bats_total=$((bat_0+bat_1))
+bats_average=$((bats_total/2))
+
+if [ "$bats_average" -ge "85" ] 
+then 
+	echo "$bats_average%"
+elif [ "$bats_average" -ge "60" ] && [ "$bats_average" -le "84" ]
+then 
+	echo "$bats_average%"
+elif [ "$bats_average" -ge "40" ] && [ "$bats_average" -le "59" ]
+then
+	echo "$bats_average%"
+elif [ "$bats_average" -ge "15" ] && [ "$bats_average" -le "39" ]
+then
+	echo "$bats_average%"
+elif [ "$bats_average" -le "15" ]
+then
+	echo "$bats_average%"
+else
+	:
+fi

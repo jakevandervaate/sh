@@ -1,0 +1,82 @@
+= My shell scripts
+
+These are the shell scripts I've written for a broad range of tasks.
+Move these into your $PATH to call them without needing to provide a full path to the script to run it.
+
+
+== General
+
+battery-notify::
+This script monitors battery levels for 2 battery systems and sends notifications via `notify-send` when the battery gets too low.
+At 5% the script notifies the user that the computer will lock in 60 seconds if not plugged in.
+If the computer isn't plugged in within 60 seconds, the screen locks with the command defined in the `lock_command` variable on line 3.
+
+== Status bar scripts (sb-*)
+
+These status bar scripts use the https://fontawesome.com/v5/search?m=free[free FontAwesome Icons].
+These scripts work for status bar programs like DWMBlocks, Polybar, or can be called in an `xsetroot` command.
+
+sb-battery::
+Displays a single, averaged battery percentage for laptops with two batteries.
+
+sb-hdspace::
+Displays the space available on a single hard drive.
+Users may have to adjust the row and column that the script reads from, depending on their system configuration. 
+
+sb-ram::
+Displays the amount of random access memory (RAM) the system is currently using.
+
+sb-time::
+Displays the current date in IS0-8601 (YYYY-MM-DD) format, and the current time in 24-hour (HH:MM) format.
+
+sb-volume::
+Displays the current volume from the system's default PulseAudio sink.
+
+sb-wifi::
+Displays the the system's current wifi connection status.
+Do note that this just displays the system's connection with the wifi access point, and not the access point's connection to the internet (this script can show an active wifi status while not connected to the internet).
+
+=== Using these scripts in a status bar
+
+*DWMBlocks* blocks.h config
+
+[source,c]
+----
+static const Block blocks[] = {
+        /*Icon*/        /*Command*/     /*Update Interval*/     /*Update Signal*/
+        {"", 		"sb-wifi", 	2, 			0},
+        {"", 		"sb-volume", 	2, 			0},
+        {"", 		"sb-ram",  	2, 			0},
+        {"", 		"sb-hdspace", 	360, 			0},
+        {"", 		"sb-time", 	15, 			0},
+        {"", 		"sb-battery", 	1, 			0},
+};
+
+//sets delimeter between status commands. NULL character ('\0') means no delimeter.
+static char delim[] = " ";
+static unsigned int delimLen = 5;
+----
+
+*Polybar* config for calling a single module, on the right side of the status bar.
+Find these areas in the config file and change them as needed.
+
+[source,shell]
+----
+font-0 = Source Code Pro:pixelsize=10;1
+font-1 = Font Awesome 5 Free:size=10;1
+font-2 = Font Awesome 5 Free Solid:size=10;1
+font-3 = Font Awesome 5 Free Brands:size=10;1
+font-4 = siji:pixelsize=10;1
+
+modules-right = sb-ram
+
+[module/sb-ram]
+type = custom/script
+format-foreground = ${colors.foreground}
+format-prefix = ""
+format-padding = 1
+label = "%output%"
+initial = 1
+interval = 3
+exec = change/this/to/the/path/to/this/script
+----

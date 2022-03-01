@@ -1,0 +1,9 @@
+#!/bin/sh
+
+#Date is in ISO-8601 YYYY-MM-DD format
+date="$(date +%Y-%m-%d)"
+
+#Time is in 24H HH:MM format
+time="$(date +%H:%M)"
+
+echo "$date $time"
