@@ -7,12 +7,14 @@ Move these into your $PATH to call them without needing to provide a full path t
 
 == General
 
-battery-notify::
+=== battery-notify
+
 This script monitors battery levels for 2 battery systems and sends notifications via `notify-send` when the battery gets too low.
 At 5% the script notifies the user that the computer will lock in 60 seconds if not plugged in.
 If the computer isn't plugged in within 60 seconds, the screen locks with the command defined in the `lock_command` variable on line 3.
 
-pdf2png::
+=== pdf2png
+
 This script converts PDF pages to compressed PNG images.
 It is useful for sending to cell phones or other situations where a PDF might be cumbersome.
 The script also adds a 2 pixel, black border to the PNGs, which can be helpful for displaying them on white backgrounds.
@@ -43,36 +45,114 @@ If only the pdf name is given, the script only creates a PNG of the first page.
 * optipng
 
 
+
+== Dmenu Scripts (dm-*)
+
+These are the scripts that I pipe through https://tools.suckless.org/dmenu[dmenu] to perform various tasks.
+
+
+=== dm-mylinks
+
+I use this for storing my links to my different websites or contact information.
+This reads a file stored in $HOME/.config/mylinks/links.txt for links or whatever information you want to store in it.
+Upon selecting the desired line in dmenu, the script types the link out wherever your cursor was when you launched the script.
+
+This is is an example structure for the `links.txt` file:
+
+[source]
+----
+My website https://example.com
+My github https://example.com
+My email address example@example.com
+----
+
+Selecting the `My email address example@example.com` line in dmenu will simply output `example@example.com` at the cursor's current location.
+
+Create the needed directory and file with `mkdir -p $HOME/.config/mylinks && touch $HOME/.config/mylinks/links.txt`
+Add all links and their descriptions to the `links.txt` file with the link as the last item in each string (with a space before it).
+
+
+*Dependencies:*
+
+* dmenu
+* xdotool
+* https://tools.suckless.org/dmenu/patches/fuzzymatch/[dmenu fuzzymatch patch]
+
+Removing the `-F` flag from the `dm="dmenu -i -l 15 -F"` line removes the dependency on the fuzzymatch patch.
+
+
+=== dm-nightlight
+
+This lets me change my screen's color temperature for evenings or mornings.
+The script uses the program _redshift_ to lessen blue light, and emit a warmer light that isn't as harsh or disruptive to sleep. 
+
+Redshift can perform these temperature changes automatically, but I prefer to adjust this manually through this script.
+
+*Dependencies*:
+
+* redshift
+* https://tools.suckless.org/dmenu/patches/center/[dmenu center patch]
+
+Removing the `-c` flag from `dm="dmenu -i -c -l 10"` removes the dependency on the center patch.
+
+
+=== dm-screenshot
+
+This screenshot script allows me to screenshot my entire screen, a specific area, or open the most recent screenshot I took.
+This saves screenshots with a filename format that matches Android phones, should you want to sync phone and computer screenshots in one directory in chronological order.
+
+*Dependencies*:
+
+* imagemagick
+* xdg-user-dirs (read more about the spec https://wiki.archlinux.org/title/XDG_user_directories[here])
+* https://tools.suckless.org/dmenu/patches/center/[dmenu center patch]
+
+Removing the `-c` flag from `dm="dmenu -i -c -l 10"` removes the dependency on the center patch.
+
+
 == Status bar scripts (sb-*)
 
 These status bar scripts use the https://fontawesome.com/v5/search?m=free[free FontAwesome Icons].
 These scripts work for status bar programs like DWMBlocks, Polybar, or can be called in an `xsetroot` command.
 
-sb-battery::
+
+=== sb-battery
+
 Displays a single, averaged battery percentage for laptops with two batteries.
 
-sb-hdspace::
+
+=== sb-hdspace
+
 Displays the space available on a single hard drive.
 Users may have to adjust the row and column that the script reads from, depending on their system configuration. 
 
-sb-ram::
+
+=== sb-ram
+
 Displays the amount of random access memory (RAM) the system is currently using.
 
-sb-time::
+
+=== sb-time
+
 Displays the current date in IS0-8601 (YYYY-MM-DD) format, and the current time in 24-hour (HH:MM) format.
 
-sb-volume::
+
+=== sb-volume
+
 Displays the current volume from the system's default PulseAudio sink.
 
-sb-wifi::
+
+=== sb-wifi
+
 Displays the the system's current wifi connection status.
 Do note that this just displays the system's connection with the wifi access point, and not the access point's connection to the internet (this script can show an active wifi status while not connected to the internet).
+
 
 === Using these scripts in a status bar
 
 *DWMBlocks* blocks.h config
 
-[source,c]
+[source,C]
 ----
 static const Block blocks[] = {
         /*Icon*/        /*Command*/     /*Update Interval*/     /*Update Signal*/

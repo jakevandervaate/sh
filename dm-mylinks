@@ -1,0 +1,14 @@
+#!/bin/sh
+
+link_file="$HOME/.config/mylinks/links.txt"
+dm="dmenu -i -l 15 -F"
+line="$(sort """$link_file""" | $dm )"
+link="$(echo """$line""" | rev | grep -o '^[^ ]*' | rev)"
+
+if [ "$link" = "" ]
+then
+	:
+else 
+	sleep .25
+	xdotool type --delay 50 "$link"
+fi
